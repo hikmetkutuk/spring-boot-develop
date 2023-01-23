@@ -1,0 +1,36 @@
+version: "3.5"
+
+services:
+  backend:
+    image: "develop:0.2.0"
+    build:
+      context: ./
+    ports:
+      - "8081:8080"
+    container_name: develop-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/developDB
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_REDIS_HOST: cache
+      SPRING_REDIS_PORT: 6379
+    depends_on:
+      - db
+      - cache
+  db:
+    image: "postgres:13.1"
+    container_name: develop-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: developDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+  cache:
+    image: "redis"
+    container_name: develop-cache
+    ports:
+      - "6379:6379"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
