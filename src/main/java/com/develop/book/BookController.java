@@ -21,7 +21,7 @@ public class BookController
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Book> saveUser(@RequestBody BookCreateRequest bookCreateRequest)
+    public ResponseEntity<Book> saveBook(@RequestBody BookCreateRequest bookCreateRequest)
     {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/book/create").toUriString());
         return ResponseEntity.created(uri).body(bookService.saveBook(bookCreateRequest));

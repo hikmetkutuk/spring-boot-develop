@@ -2,7 +2,7 @@ version: "3.5"
 
 services:
   backend:
-    image: "develop:0.2.0"
+    image: "develop:0.3.2"
     build:
       context: ./
     ports:
@@ -26,6 +26,8 @@ services:
       POSTGRES_DB: developDB
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+    volumes:
+      - nps_data:/data/postgres
   cache:
     image: "redis"
     container_name: develop-cache
@@ -34,3 +36,6 @@ services:
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
       - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+
+volumes:
+  nps_data: {}
