@@ -1,8 +1,9 @@
 version: "3.5"
 
 services:
+
   backend:
-    image: "develop:0.3.2"
+    image: "develop:0.5.0"
     build:
       context: ./
     ports:
@@ -14,9 +15,11 @@ services:
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_REDIS_HOST: cache
       SPRING_REDIS_PORT: 6379
+      SPRING_DATA_MONGODB_.HOST: mongodb
     depends_on:
       - db
       - cache
+
   db:
     image: "postgres:13.1"
     container_name: develop-db
@@ -27,7 +30,16 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
-      - nps_data:/data/postgres
+      - postgres_data:/data/postgres
+
+  mongodb:
+    image: mongo:6.0.3
+    container_name: develop-mongodb
+    ports:
+      - "27070:27017"
+    volumes:
+      - mongo_data:/data/mongo
+
   cache:
     image: "redis"
     container_name: develop-cache
@@ -38,4 +50,5 @@ services:
       - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
 
 volumes:
-  nps_data: {}
+  postgres_data: {}
+  mongo_data: {}

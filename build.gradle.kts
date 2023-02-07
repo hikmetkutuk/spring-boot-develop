@@ -37,6 +37,7 @@ dependencies {
     implementation("io.springfox:springfox-boot-starter:3.0.0")
     implementation("com.auth0:java-jwt:3.18.1")
     implementation("redis.clients:jedis")
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     runtimeOnly("org.postgresql:postgresql")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlin:kotlin-reflect")

@@ -29,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
             "/api/book/**",
             "/api/login/**",
             "/api/role/**",
+            "/api/log/**",
             "/api/token/refresh/**",
             "/api/user/create",
             "/api/user/add-role",
