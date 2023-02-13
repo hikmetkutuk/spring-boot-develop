@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -29,10 +31,13 @@ public class BookServiceImpl implements BookService
         Book book = new Book
         (
             null,
-            bookCreateRequest.getTitle(),
-            bookCreateRequest.getAuthor()
+            bookCreateRequest.getName(),
+            bookCreateRequest.getAuthor(),
+            bookCreateRequest.getDescription(),
+            bookCreateRequest.getPrice()
         );
-        logger.info("Saving new book {} to the database", bookCreateRequest.getTitle());
+
+        logger.info("Saving new book {} to the database", bookCreateRequest.getName());
         return bookRepository.save(book);
     }
 

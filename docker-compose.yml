@@ -2,27 +2,27 @@ version: "3.5"
 
 services:
 
-  backend:
-    image: "develop:0.5.0"
+  develop-service:
+    image: "develop:0.6.0"
     build:
       context: ./
     ports:
       - "8081:8080"
     container_name: develop-backend
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/developDB
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/developDB
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_REDIS_HOST: cache
       SPRING_REDIS_PORT: 6379
       SPRING_DATA_MONGODB_.HOST: mongodb
     depends_on:
-      - db
+      - postgres
       - cache
 
-  db:
+  postgres:
     image: "postgres:13.1"
-    container_name: develop-db
+    container_name: develop-postgres
     ports:
       - "5432:5432"
     environment:

@@ -20,8 +20,8 @@ public class SwaggerConfig
 
     private ApiInfo apiInfo()
     {
-        return new ApiInfo("MyApp Rest APIs",
-                "APIs for MyApp.",
+        return new ApiInfo("Spring Boot Develop Rest APIs",
+                "",
                 "1.0",
                 "Terms of service",
                 new Contact("test", "www.org.com", "test@emaildomain.com"),
