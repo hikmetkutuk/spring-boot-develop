@@ -19,11 +19,23 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
+    /**
+     * Register a user based on the provided UserRequest.
+     *
+     * @param request the UserRequest containing user information
+     * @return ResponseEntity with AuthResponse containing registration status
+     */
+    @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody UserRequest request) {
         return ResponseEntity.ok(userService.register(request));
     }
 
+    /**
+     * A description of the entire Java function.
+     *
+     * @param request description of parameter
+     * @return description of return value
+     */
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
         return ResponseEntity.ok(userService.login(request));
