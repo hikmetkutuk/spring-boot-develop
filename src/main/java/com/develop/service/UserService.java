@@ -7,6 +7,7 @@ import com.develop.exception.UserLoginException;
 import com.develop.exception.UserRegistrationException;
 import com.develop.model.Role;
 import com.develop.model.User;
+import com.develop.repository.TokenRepository;
 import com.develop.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;

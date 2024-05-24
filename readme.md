@@ -7,3 +7,10 @@
 ![SpringBoot](https://img.shields.io/static/v1?&logo=springboot&label=spring%20boot&message=3.2.4&color=6db33f&style=for-the-badge)
 ![Postgres](https://img.shields.io/static/v1?&logo=postgresql&label=postgre%20sql&message=15.5&color=336791&style=for-the-badge)
 ![Docker](https://img.shields.io/static/v1?&logo=docker&label=docker&message=25.0.2&color=086dd7&style=for-the-badge)
+
+---
+
+- [x] Jwt Auth
+- [x] Revoke Token
+- [x] Logout
+- [ ] Refresh Token
