@@ -18,3 +18,11 @@ spring:
 
 server:
   port: 8090
+
+application:
+  security:
+    jwt:
+      secret-key: 656624227a5e50472d584e313b583d7c56512e69745c4c626e4d64234c
+      expiration: 86400000
+      refresh-token:
+        expiration: 604800000

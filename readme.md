@@ -13,4 +13,4 @@
 - [x] Jwt Auth
 - [x] Revoke Token
 - [x] Logout
-- [ ] Refresh Token
+- [x] Refresh Token

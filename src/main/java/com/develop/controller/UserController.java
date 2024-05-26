@@ -4,11 +4,15 @@ import com.develop.dto.AuthRequest;
 import com.develop.dto.AuthResponse;
 import com.develop.dto.UserRequest;
 import com.develop.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -39,5 +43,16 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
         return ResponseEntity.ok(userService.login(request));
+    }
+
+    /**
+     * Refreshes the token by calling the userService method.
+     *
+     * @param request  the HttpServletRequest object
+     * @param response the HttpServletResponse object
+     */
+    @PostMapping("/refresh-token")
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        userService.refreshToken(request, response);
     }
 }
