@@ -14,3 +14,4 @@
 - [x] Revoke Token
 - [x] Logout
 - [x] Refresh Token
+- [x] Roles and Permissions Based Authorization
