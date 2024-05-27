@@ -7,10 +7,8 @@ import com.develop.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -54,5 +52,11 @@ public class UserController {
     @PostMapping("/refresh-token")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         userService.refreshToken(request, response);
+    }
+
+    @GetMapping("/list")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN') and hasAnyAuthority('admin:read', 'super_admin:read')")
+    public String getAllUsers() {
+        return "User list";
     }
 }

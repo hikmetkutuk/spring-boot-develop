@@ -5,7 +5,6 @@ import com.develop.dto.AuthResponse;
 import com.develop.dto.UserRequest;
 import com.develop.exception.UserLoginException;
 import com.develop.exception.UserRegistrationException;
-import com.develop.model.Role;
 import com.develop.model.User;
 import com.develop.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,10 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -46,7 +42,7 @@ public class UserService {
                     .name(request.name())
                     .email(request.email())
                     .password(passwordEncoder.encode(request.password()))
-                    .role(Role.USER)
+                    .role(request.role())
                     .build();
             var registeredUser = userRepository.save(newUser);
             var jwtToken = jwtService.generateToken(newUser);
