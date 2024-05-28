@@ -3,8 +3,10 @@ package com.develop.service;
 import com.develop.dto.AuthRequest;
 import com.develop.dto.AuthResponse;
 import com.develop.dto.UserRequest;
+import com.develop.dto.UserResponse;
 import com.develop.exception.UserLoginException;
 import com.develop.exception.UserRegistrationException;
+import com.develop.exception.UserRetrievalException;
 import com.develop.model.User;
 import com.develop.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,6 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -96,6 +100,24 @@ public class UserService {
                 var authResponse = new AuthResponse(accessToken, refreshToken);
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }
+        }
+    }
+
+    public List<UserResponse> getAllUsers() {
+        try {
+            var response = userRepository.findAll().stream()
+                    .map(user -> new UserResponse(
+                            user.getId(),
+                            user.getName(),
+                            user.getEmail(),
+                            user.getRole()
+                    ))
+                    .collect(Collectors.toList());
+            log.info("Get all users successfully");
+            return response;
+        } catch (Exception e) {
+            log.error("Failed to get all users: {}", e.getMessage());
+            throw new UserRetrievalException("Failed to get all users: " + e.getMessage());
         }
     }
 }

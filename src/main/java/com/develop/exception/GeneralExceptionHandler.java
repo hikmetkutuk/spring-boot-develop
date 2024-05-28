@@ -16,4 +16,9 @@ public class GeneralExceptionHandler {
     public ResponseEntity<?> handle(UserLoginException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(UserRetrievalException.class)
+    public ResponseEntity<?> handle(UserRetrievalException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
 }
