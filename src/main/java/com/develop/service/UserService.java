@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -103,6 +104,7 @@ public class UserService {
         }
     }
 
+    @Cacheable(cacheNames = "userCache", cacheManager = "redisCacheManager")
     public List<UserResponse> getAllUsers() {
         try {
             var response = userRepository.findAll().stream()
