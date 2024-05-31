@@ -3,6 +3,7 @@ package com.develop.service;
 import com.develop.dto.AuthRequest;
 import com.develop.dto.AuthResponse;
 import com.develop.dto.UserRequest;
+import com.develop.dto.UserResponse;
 import com.develop.exception.UserLoginException;
 import com.develop.exception.UserRegistrationException;
 import com.develop.model.Role;
@@ -18,6 +19,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -128,6 +131,20 @@ class UserServiceTest {
         UserLoginException exception = assertThrows(UserLoginException.class, () -> userService.login(authRequest));
 
         assertEquals("Failed to login user: Authentication failed", exception.getMessage());
+    }
+
+    @Test
+    void getAllUsers_ShouldReturnUserResponseList() {
+        User user1 = User.builder().id(1L).name("John Doe").email("john@example.com").role(Role.USER).build();
+        User user2 = User.builder().id(2L).name("Jane Doe").email("jane@example.com").role(Role.USER).build();
+        when(userRepository.findAll()).thenReturn(Arrays.asList(user1, user2));
+
+        List<UserResponse> users = userService.getAllUsers();
+
+        assertEquals(2, users.size());
+        assertEquals("John Doe", users.get(0).name());
+        assertEquals("Jane Doe", users.get(1).name());
+        verify(userRepository).findAll();
     }
 
     @AfterEach
