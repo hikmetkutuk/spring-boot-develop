@@ -17,4 +17,5 @@
 - [x] Roles and Permissions Based Authorization
 - [x] Unit Test
 - [x] Redis Cache
+- [x] Request Body Validation
 - [ ] Swagger Doc
