@@ -7,6 +7,7 @@ import com.develop.dto.UserResponse;
 import com.develop.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class UserController {
      * @return ResponseEntity with AuthResponse containing registration status
      */
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody UserRequest request) {
+    public ResponseEntity<AuthResponse> register(@Valid @RequestBody UserRequest request) {
         return ResponseEntity.ok(userService.register(request));
     }
 
@@ -41,7 +42,7 @@ public class UserController {
      * @return description of return value
      */
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest request) {
         return ResponseEntity.ok(userService.login(request));
     }
 
