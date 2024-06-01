@@ -15,6 +15,11 @@ spring:
     username: develop
     url: jdbc:postgresql://localhost:5432/develop
     password: develop
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
 server:
   port: 8090
@@ -26,3 +31,10 @@ application:
       expiration: 86400000
       refresh-token:
         expiration: 604800000
+
+rabbitmq:
+  queue:
+    name: develop-queue
+  exchange:
+    name: develop-exchange
+  routing-key: routing_key_develop

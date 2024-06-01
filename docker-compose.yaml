@@ -3,6 +3,7 @@ version: '3.8'
 services:
   db:
     image: postgres:15.5
+    container_name: develop-db
     environment:
       POSTGRES_DB: develop
       POSTGRES_USER: develop
@@ -11,6 +12,19 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data_spring_develop:/var/lib/postgresql/data
+
+  cache:
+    image: redis:7.2
+    container_name: develop-cache
+    ports:
+      - "6379:6379"
+
+  broker:
+    image: rabbitmq:3.10.5-management-alpine
+    container_name: develop-broker
+    ports:
+      - "5672:5672"
+      - "15672:15672"
 
 volumes:
   postgres_data_spring_develop:

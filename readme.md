@@ -7,6 +7,8 @@
 ![SpringBoot](https://img.shields.io/static/v1?&logo=springboot&label=spring%20boot&message=3.2.4&color=6db33f&style=for-the-badge)
 ![Postgres](https://img.shields.io/static/v1?&logo=postgresql&label=postgre%20sql&message=15.5&color=336791&style=for-the-badge)
 ![Docker](https://img.shields.io/static/v1?&logo=docker&label=docker&message=25.0.2&color=086dd7&style=for-the-badge)
+![Redis](https://img.shields.io/static/v1?&logo=redis&label=redis&message=7.2&color=dc0432&style=for-the-badge)
+![RabbitMQ](https://img.shields.io/static/v1?&logo=rabbitmq&label=rabbitmq&message=3.10.5&color=f96602&style=for-the-badge)
 
 ---
 
