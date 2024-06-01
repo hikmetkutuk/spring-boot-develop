@@ -28,12 +28,20 @@ public class SecurityConfig {
         this.logoutHandler = logoutHandler;
     }
 
+    private static final String[] WHITE_LIST = new String[]{
+            "/api/v1/user/register",
+            "/api/v1/user/login",
+            "/api/v1/user/refresh-token",
+            "/api/v1/message/publish"
+    };
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/user/register", "/api/v1/user/login", "/api/v1/user/refresh-token").permitAll()
+                        .requestMatchers(WHITE_LIST).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
