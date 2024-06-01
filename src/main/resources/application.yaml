@@ -35,6 +35,9 @@ application:
 rabbitmq:
   queue:
     name: develop-queue
+    json-queue:
+      name: develop-json-queue
   exchange:
     name: develop-exchange
   routing-key: routing_key_develop
+  routing-json-key: routing_json_key_develop
