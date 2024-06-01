@@ -18,4 +18,5 @@
 - [x] Unit Test
 - [x] Redis Cache
 - [x] Request Body Validation
+- [ ] Messaging with RabbitMQ
 - [ ] Swagger Doc
