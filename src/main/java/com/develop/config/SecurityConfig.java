@@ -32,7 +32,8 @@ public class SecurityConfig {
             "/api/v1/user/register",
             "/api/v1/user/login",
             "/api/v1/user/refresh-token",
-            "/api/v1/message/publish"
+            "/api/v1/message/publish",
+            "/api/v1/message/json/publish"
     };
 
 

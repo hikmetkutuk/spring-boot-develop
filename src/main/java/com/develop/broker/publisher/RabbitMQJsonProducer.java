@@ -1,6 +1,6 @@
 package com.develop.broker.publisher;
 
-import com.develop.model.User;
+import com.develop.dto.UserRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,8 +21,8 @@ public class RabbitMQJsonProducer {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void sendMessage(User user) {
-        log.info("Json message sent -> {}", user);
-        rabbitTemplate.convertAndSend(exchangeName, routingKey, user);
+    public void sendMessage(UserRequest request) {
+        log.info("Json message sent -> {}", request.email());
+        rabbitTemplate.convertAndSend(exchangeName, routingKey, request);
     }
 }
