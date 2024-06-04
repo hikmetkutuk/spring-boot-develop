@@ -1,19 +1,20 @@
 package com.develop.controller;
 
-import com.develop.dto.AuthRequest;
-import com.develop.dto.AuthResponse;
-import com.develop.dto.UserRequest;
-import com.develop.dto.UserResponse;
+import com.develop.dto.*;
 import com.develop.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -25,14 +26,24 @@ public class UserController {
     }
 
     /**
-     * Register a user based on the provided UserRequest.
+     * Registers a new user based on the provided UserRequest.
      *
-     * @param request the UserRequest containing user information
-     * @return ResponseEntity with AuthResponse containing registration status
+     * @param request the UserRequest object containing user registration details
+     * @return an HTTP response with status code, message, timestamp, and user data
      */
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@Valid @RequestBody UserRequest request) {
-        return ResponseEntity.ok(userService.register(request));
+    public ResponseEntity<HttpResponse> register(@Valid @RequestBody UserRequest request) {
+        AuthResponse response = userService.register(request);
+        return ResponseEntity.created(URI.create("")).body(
+                HttpResponse.builder()
+                        .timestamp(LocalDateTime.now().toString())
+                        .data(Map.of("user", response))
+                        .message("User registered successfully")
+                        .path("/api/v1/user/register")
+                        .statusCode(HttpStatus.CREATED.value())
+                        .status(HttpStatus.CREATED)
+                        .build()
+        );
     }
 
     /**

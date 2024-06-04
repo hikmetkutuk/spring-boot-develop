@@ -4,6 +4,7 @@ import com.develop.dto.AuthRequest;
 import com.develop.dto.AuthResponse;
 import com.develop.dto.UserRequest;
 import com.develop.dto.UserResponse;
+import com.develop.exception.EmailAlreadyExistsException;
 import com.develop.exception.UserLoginException;
 import com.develop.exception.UserRegistrationException;
 import com.develop.exception.UserRetrievalException;
@@ -43,6 +44,10 @@ public class UserService {
 
     public AuthResponse register(UserRequest request) {
         try {
+            if (userRepository.existsByEmail(request.email())) {
+                throw new EmailAlreadyExistsException("Email already in use");
+            }
+
             User newUser = User.builder()
                     .name(request.name())
                     .email(request.email())
