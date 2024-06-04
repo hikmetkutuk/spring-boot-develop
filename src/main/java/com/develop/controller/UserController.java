@@ -37,7 +37,7 @@ public class UserController {
         return ResponseEntity.created(URI.create("")).body(
                 HttpResponse.builder()
                         .timestamp(LocalDateTime.now().toString())
-                        .data(Map.of("user", response))
+                        .data(Map.of("response", response))
                         .message("User registered successfully")
                         .path("/api/v1/user/register")
                         .statusCode(HttpStatus.CREATED.value())
@@ -47,14 +47,24 @@ public class UserController {
     }
 
     /**
-     * A description of the entire Java function.
+     * Generates a response entity for user login.
      *
-     * @param request description of parameter
-     * @return description of return value
+     * @param request the authentication request
+     * @return response entity with login information
      */
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest request) {
-        return ResponseEntity.ok(userService.login(request));
+    public ResponseEntity<HttpResponse> login(@Valid @RequestBody AuthRequest request) {
+        AuthResponse response = userService.login(request);
+        return ResponseEntity.ok(
+                HttpResponse.builder()
+                        .timestamp(LocalDateTime.now().toString())
+                        .data(Map.of("response", response))
+                        .message("User logged in successfully")
+                        .path("/api/v1/user/login")
+                        .statusCode(HttpStatus.OK.value())
+                        .status(HttpStatus.OK)
+                        .build()
+        );
     }
 
     /**
@@ -69,14 +79,23 @@ public class UserController {
     }
 
     /**
-     * Retrieves a list of all users. Requires ADMIN or SUPER_ADMIN role with
-     * corresponding read authority.
+     * Get all users with roles ADMIN or SUPER_ADMIN and authorities admin:read or super_admin:read.
      *
-     * @return ResponseEntity containing a list of UserResponse objects
+     * @return Response entity containing a list of users and success message
      */
     @GetMapping("/list")
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN') and hasAnyAuthority('admin:read', 'super_admin:read')")
-    public ResponseEntity<List<UserResponse>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
+    public ResponseEntity<HttpResponse> getAllUsers() {
+        List<UserResponse> users = userService.getAllUsers();
+        return ResponseEntity.ok(
+                HttpResponse.builder()
+                        .timestamp(LocalDateTime.now().toString())
+                        .data(Map.of("users", users))
+                        .message("Users retrieved successfully")
+                        .path("/api/v1/user/list")
+                        .statusCode(HttpStatus.OK.value())
+                        .status(HttpStatus.OK)
+                        .build()
+        );
     }
 }
