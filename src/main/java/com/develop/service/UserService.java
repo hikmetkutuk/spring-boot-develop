@@ -127,4 +127,22 @@ public class UserService {
             throw new UserRetrievalException("Failed to get all users: " + e.getMessage());
         }
     }
+
+    @Cacheable(cacheNames = "userCache", cacheManager = "redisCacheManager")
+    public UserResponse getUserById(Long id) {
+        try {
+            var user = userRepository.findById(id).orElseThrow();
+            var response = new UserResponse(
+                    user.getId(),
+                    user.getName(),
+                    user.getEmail(),
+                    user.getRole()
+            );
+            log.info("Get user with id {} successfully", id);
+            return response;
+        } catch (Exception e) {
+            log.error("Failed to get user with id {}: {}", id, e.getMessage());
+            throw new UserRetrievalException("Failed to get user with id " + id + ": " + e.getMessage());
+        }
+    }
 }

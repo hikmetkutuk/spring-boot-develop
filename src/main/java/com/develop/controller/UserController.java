@@ -98,4 +98,26 @@ public class UserController {
                         .build()
         );
     }
+
+    /**
+     * Retrieves a user by their ID.
+     *
+     * @param  id	The ID of the user to retrieve
+     * @return     	The HTTP response containing the user data
+     */
+    @GetMapping("/list/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN') and hasAnyAuthority('admin:read', 'super_admin:read')")
+    public ResponseEntity<HttpResponse> getUserById(@PathVariable("id") Long id) {
+        UserResponse user = userService.getUserById(id);
+        return ResponseEntity.ok(
+                HttpResponse.builder()
+                        .timestamp(LocalDateTime.now().toString())
+                        .data(Map.of("user", user))
+                        .message("User retrieved by id successfully")
+                        .path("/api/v1/user/list/{id}")
+                        .statusCode(HttpStatus.OK.value())
+                        .status(HttpStatus.OK)
+                        .build()
+        );
+    }
 }
