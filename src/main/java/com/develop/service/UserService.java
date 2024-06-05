@@ -11,7 +11,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -143,6 +145,11 @@ public class UserService {
         }
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = "userCache", allEntries = true, cacheManager = "redisCacheManager")
+            }
+    )
     public UserResponse updateUser(Long id, UserRequest request) {
         try {
             var user = userRepository.findById(id).orElseThrow();
