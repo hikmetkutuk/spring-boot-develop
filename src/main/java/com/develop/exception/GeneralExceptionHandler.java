@@ -39,4 +39,17 @@ public class GeneralExceptionHandler {
                         .build()
         );
     }
+
+    @ExceptionHandler(UserUpdateException.class)
+    public ResponseEntity<HttpResponse> handle(UserUpdateException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                HttpResponse.builder()
+                        .timestamp(LocalDateTime.now().toString())
+                        .message(ex.getMessage())
+                        .path("/api/v1/user/update")
+                        .statusCode(HttpStatus.CONFLICT.value())
+                        .status(HttpStatus.CONFLICT)
+                        .build()
+        );
+    }
 }

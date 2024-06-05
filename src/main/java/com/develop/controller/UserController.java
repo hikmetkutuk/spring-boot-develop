@@ -102,8 +102,8 @@ public class UserController {
     /**
      * Retrieves a user by their ID.
      *
-     * @param  id	The ID of the user to retrieve
-     * @return     	The HTTP response containing the user data
+     * @param id The ID of the user to retrieve
+     * @return The HTTP response containing the user data
      */
     @GetMapping("/list/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN') and hasAnyAuthority('admin:read', 'super_admin:read')")
@@ -115,6 +115,28 @@ public class UserController {
                         .data(Map.of("user", user))
                         .message("User retrieved by id successfully")
                         .path("/api/v1/user/list/{id}")
+                        .statusCode(HttpStatus.OK.value())
+                        .status(HttpStatus.OK)
+                        .build()
+        );
+    }
+
+    /**
+     * Updates a user by the provided ID.
+     *
+     * @param id      the ID of the user to update
+     * @param request the user request containing updated information
+     * @return an HTTP response with updated user details
+     */
+    @PostMapping("/update/{id}")
+    public ResponseEntity<HttpResponse> updateUser(@PathVariable("id") Long id, @Valid @RequestBody UserRequest request) {
+        UserResponse user = userService.updateUser(id, request);
+        return ResponseEntity.ok(
+                HttpResponse.builder()
+                        .timestamp(LocalDateTime.now().toString())
+                        .data(Map.of("user", user))
+                        .message("User updated successfully")
+                        .path("/api/v1/user/update/{id}")
                         .statusCode(HttpStatus.OK.value())
                         .status(HttpStatus.OK)
                         .build()

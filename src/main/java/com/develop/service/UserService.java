@@ -4,10 +4,7 @@ import com.develop.dto.AuthRequest;
 import com.develop.dto.AuthResponse;
 import com.develop.dto.UserRequest;
 import com.develop.dto.UserResponse;
-import com.develop.exception.EmailAlreadyExistsException;
-import com.develop.exception.UserLoginException;
-import com.develop.exception.UserRegistrationException;
-import com.develop.exception.UserRetrievalException;
+import com.develop.exception.*;
 import com.develop.model.User;
 import com.develop.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -143,6 +140,27 @@ public class UserService {
         } catch (Exception e) {
             log.error("Failed to get user with id {}: {}", id, e.getMessage());
             throw new UserRetrievalException("Failed to get user with id " + id + ": " + e.getMessage());
+        }
+    }
+
+    public UserResponse updateUser(Long id, UserRequest request) {
+        try {
+            var user = userRepository.findById(id).orElseThrow();
+            user.setName(request.name());
+            user.setEmail(request.email());
+            user.setPassword(passwordEncoder.encode(request.password()));
+            user.setRole(request.role());
+            userRepository.save(user);
+            log.info("User with id {} updated successfully", id);
+            return new UserResponse(
+                    user.getId(),
+                    user.getName(),
+                    user.getEmail(),
+                    user.getRole()
+            );
+        } catch (Exception e) {
+            log.error("Failed to update user with id {}: {}", id, e.getMessage());
+            throw new UserUpdateException("Failed to update user with id " + id + ": " + e.getMessage());
         }
     }
 }
