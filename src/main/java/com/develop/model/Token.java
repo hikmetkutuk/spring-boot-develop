@@ -3,8 +3,6 @@ package com.develop.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.io.Serializable;
-
 @Getter
 @Setter
 @Entity
@@ -12,11 +10,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "t_token")
-public class Token implements Serializable {
+public class Token extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String token;
 
     @Enumerated(EnumType.STRING)
