@@ -21,4 +21,5 @@
 - [x] Redis Cache
 - [x] Request Body Validation
 - [x] Messaging with RabbitMQ
+- [x] Jpa Auditing
 - [ ] Swagger Doc
