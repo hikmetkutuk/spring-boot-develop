@@ -23,3 +23,4 @@
 - [x] Messaging with RabbitMQ
 - [x] Jpa Auditing
 - [ ] Swagger Doc
+- [ ] File Upload/Object Storage
