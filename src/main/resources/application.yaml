@@ -41,3 +41,8 @@ rabbitmq:
     name: develop-exchange
   routing-key: routing_key_develop
   routing-json-key: routing_json_key_develop
+
+s3:
+  access-key:
+  secret-key:
+  bucket: spring-develop
