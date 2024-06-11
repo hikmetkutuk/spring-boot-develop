@@ -35,7 +35,8 @@ public class SecurityConfig {
             "/api/v1/user/update/**",
             "/api/v1/message/publish",
             "/api/v1/message/json/publish",
-            "/api/v1/file/upload"
+            "/api/v1/file/upload",
+            "/api/v1/file/download/**"
     };
 
 
