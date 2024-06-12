@@ -25,4 +25,4 @@
 - [x] Jpa Auditing
 - [ ] Swagger Doc
 - [x] File Upload/Object Storage
-- [ ] Generate QR Code
+- [x] Generate QR Code
