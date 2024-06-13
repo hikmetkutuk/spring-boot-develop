@@ -10,4 +10,5 @@ import org.springframework.transaction.annotation.Transactional;
 public interface FileRepository extends JpaRepository<File, Long> {
 
     File findByFileName(String fileName);
+    File findFirstByFileName(String fileName);
 }

@@ -25,8 +25,8 @@ public class FileController {
     /**
      * Uploads a file to the server and returns a response entity.
      *
-     * @param  file	The file to be uploaded
-     * @return     	Response entity containing the upload status
+     * @param file The file to be uploaded
+     * @return Response entity containing the upload status
      */
     @PostMapping("/upload")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
@@ -45,15 +45,20 @@ public class FileController {
     }
 
     /**
-     * Downloads a file based on the provided fileName.
+     * Downloads a file from the server and returns a response entity.
      *
-     * @param  fileName     the name of the file to be downloaded
-     * @return              response entity with the downloaded file
+     * @param fileName The name of the file to be downloaded
+     * @return Response entity containing the downloaded file
      */
     @GetMapping("/download/{fileName}")
     public ResponseEntity<?> downloadFile(@PathVariable("fileName") String fileName) {
         File fileDetails = fileService.getFile(fileName);
         byte[] file = fileService.downloadFileFromS3(fileName);
+
+        if (file == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Dosya indirilemedi.");
+        }
 
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.valueOf(fileDetails.getFileType()))

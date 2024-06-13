@@ -13,6 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 @Table(name = "t_file")
 public class File extends BaseEntity {
+    @Column(unique = true)
     private String fileName;
     private String fileType;
 

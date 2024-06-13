@@ -4,12 +4,17 @@ import com.develop.model.File;
 import com.develop.repository.FileRepository;
 import com.develop.util.AwsCloudUtil;
 import com.develop.util.FileUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
+@Slf4j
 @Service
 public class FileService {
 
@@ -33,49 +38,52 @@ public class FileService {
     }
 
     public File getFile(String fileName) {
-        return fileRepository.findByFileName(fileName);
-    }
-
-    public void deleteFile(String fileName) throws Exception {
-        File file = getFile(fileName);
-        if (file == null) {
-            throw new Exception(String.format("File %s not found", fileName));
-        }
-        fileRepository.delete(file);
-    }
-
-    public byte[] downloadFile(String fileName) {
-        return FileUtil.decompressFile(getFile(fileName).getFileByte());
+        return fileRepository.findFirstByFileName(fileName);
     }
 
     public byte[] downloadFileFromS3(String fileName) {
-        try {
-            AwsCloudUtil awsCloudUtil = new AwsCloudUtil();
-            return awsCloudUtil.downloadFileFromS3(fileName, AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_BUCKET).readAllBytes();
+        AwsCloudUtil awsCloudUtil = new AwsCloudUtil();
+        InputStream inputStream = awsCloudUtil.downloadFileFromS3(fileName, AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_BUCKET);
+
+        String resourcesPath = "src/main/resources/static/img/";
+        java.io.File targetFile = new java.io.File(resourcesPath + fileName);
+
+        try (FileOutputStream outputStream = new FileOutputStream(targetFile)) {
+            byte[] fileContent = StreamUtils.copyToByteArray(inputStream);
+            outputStream.write(fileContent);
+            log.info("File downloaded: {}", fileName);
+            return fileContent;
         } catch (IOException e) {
+            log.error("Error downloading file from S3: {}", e.getMessage());
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
-    public String uploadMultipartFile(MultipartFile data) {
+    public void uploadMultipartFile(MultipartFile data) {
+        String fileName = data.getOriginalFilename();
+        String fileType = data.getContentType();
+
+        File existingFile = fileRepository.findFirstByFileName(fileName);
+        if (existingFile != null && existingFile.getFileType().equals(fileType)) {
+            log.info("File already exists: {}", fileName);
+            return;
+        }
+
         File file = new File();
-        file.setFileName(data.getOriginalFilename());
-        file.setFileType(data.getContentType());
+        file.setFileName(fileName);
+        file.setFileType(fileType);
 
         try {
             file.setFileByte(FileUtil.compressFile(data.getBytes()));
         } catch (IOException e) {
+            log.error("Error compressing file: {}", e.getMessage());
             e.printStackTrace();
         }
 
+        log.info("File uploaded: {}", fileName);
         File newFile = saveFile(file);
-
-        if (newFile != null) {
-            return String.format("File %s uploaded successfully", newFile.getFileName());
-        }
-
-        return String.format("File %s not uploaded", file.getFileName());
+        fileRepository.save(newFile);
     }
 
     public String uploadFileToS3(MultipartFile data) {
@@ -86,6 +94,7 @@ public class FileService {
             awsCloudUtil.uploadFileToS3(data.getOriginalFilename(), data.getBytes(), AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_BUCKET);
             return String.format("File %s uploaded successfully", data.getOriginalFilename());
         } catch (IOException e) {
+            log.error("Error uploading file to S3: {}", e.getMessage());
             e.printStackTrace();
         }
         return String.format("File %s not uploaded", data.getOriginalFilename());
