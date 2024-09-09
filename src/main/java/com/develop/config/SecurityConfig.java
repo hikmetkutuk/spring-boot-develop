@@ -37,7 +37,12 @@ public class SecurityConfig {
         "/api/v1/message/json/publish",
         "/api/v1/file/upload",
         "/api/v1/file/download/**",
-        "/api/v1/qrcode/generate/**"
+        "/api/v1/qrcode/generate/**",
+        "/swagger-ui.html",
+        "/swagger-ui/**",
+        "/v3/api-docs/**",
+        "/swagger-resources/**",
+        "/api-docs/**",
     };
 
     @Bean

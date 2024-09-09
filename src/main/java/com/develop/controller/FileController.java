@@ -3,6 +3,7 @@ package com.develop.controller;
 import com.develop.dto.HttpResponse;
 import com.develop.model.File;
 import com.develop.service.FileService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.LocalDateTime;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/file")
+@Tag(name = "File", description = "File management API")
 public class FileController {
 
     private final FileService fileService;

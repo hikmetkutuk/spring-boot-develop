@@ -3,11 +3,13 @@ package com.develop.controller;
 import com.develop.broker.publisher.RabbitMQJsonProducer;
 import com.develop.broker.publisher.RabbitMQProducer;
 import com.develop.dto.UserRequest;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/message")
+@Tag(name = "Message", description = "Message management API")
 public class MessageController {
     private final RabbitMQProducer rabbitMQProducer;
     private final RabbitMQJsonProducer rabbitMQJsonProducer;
