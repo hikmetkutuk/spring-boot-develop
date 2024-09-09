@@ -26,3 +26,5 @@
 - [ ] Swagger Doc
 - [x] File Upload/Object Storage
 - [x] Generate QR Code
+- [ ] Schedule Tasks
+- [ ] Code Formatting with Spotless 
