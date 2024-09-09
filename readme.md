@@ -10,6 +10,7 @@
 ![Redis](https://img.shields.io/static/v1?&logo=redis&label=redis&message=7.2&color=dc0432&style=for-the-badge)
 ![RabbitMQ](https://img.shields.io/static/v1?&logo=rabbitmq&label=rabbitmq&message=3.10.5&color=f96602&style=for-the-badge)
 ![Aws](https://img.shields.io/static/v1?&logo=amazon&label=aws&message=1.12.470&color=ff9900&style=for-the-badge)
+![Swagger](https://img.shields.io/static/v1?&logo=swagger&label=swagger&message=3.0.1&color=44cc11&style=for-the-badge)
 
 ---
 
@@ -23,7 +24,7 @@
 - [x] Request Body Validation
 - [x] Messaging with RabbitMQ
 - [x] Jpa Auditing
-- [ ] Swagger Doc
+- [x] Swagger Doc
 - [x] File Upload/Object Storage
 - [x] Generate QR Code
 - [ ] Schedule Tasks
