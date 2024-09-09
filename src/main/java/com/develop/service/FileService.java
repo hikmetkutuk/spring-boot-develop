@@ -4,15 +4,14 @@ import com.develop.model.File;
 import com.develop.repository.FileRepository;
 import com.develop.util.AwsCloudUtil;
 import com.develop.util.FileUtil;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 @Slf4j
 @Service
@@ -91,7 +90,8 @@ public class FileService {
             uploadMultipartFile(data);
 
             AwsCloudUtil awsCloudUtil = new AwsCloudUtil();
-            awsCloudUtil.uploadFileToS3(data.getOriginalFilename(), data.getBytes(), AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_BUCKET);
+            awsCloudUtil.uploadFileToS3(
+                    data.getOriginalFilename(), data.getBytes(), AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_BUCKET);
             return String.format("File %s uploaded successfully", data.getOriginalFilename());
         } catch (IOException e) {
             log.error("Error uploading file to S3: {}", e.getMessage());

@@ -8,7 +8,6 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -18,16 +17,12 @@ public class AwsCloudUtil {
 
     private AWSCredentials awsCredentials(String accessKey, String secretKey) {
 
-        return new BasicAWSCredentials(
-                accessKey,
-                secretKey
-        );
+        return new BasicAWSCredentials(accessKey, secretKey);
     }
 
     private AmazonS3 awsS3ClientBuilder(String accessKey, String secretKey) {
 
-        return AmazonS3ClientBuilder
-                .standard()
+        return AmazonS3ClientBuilder.standard()
                 .withCredentials(new AWSStaticCredentialsProvider(awsCredentials(accessKey, secretKey)))
                 .withRegion(Regions.EU_CENTRAL_1)
                 .build();
@@ -44,7 +39,8 @@ public class AwsCloudUtil {
         s3Client.putObject(bucketName, filename, file);
     }
 
-    public S3ObjectInputStream downloadFileFromS3(String filename, String accessKey, String secretKey, String bucketName) {
+    public S3ObjectInputStream downloadFileFromS3(
+            String filename, String accessKey, String secretKey, String bucketName) {
         AmazonS3 s3Client = awsS3ClientBuilder(accessKey, secretKey);
         S3Object s3Object = s3Client.getObject(bucketName, filename);
         return s3Object.getObjectContent();

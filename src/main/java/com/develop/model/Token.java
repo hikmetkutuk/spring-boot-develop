@@ -16,6 +16,7 @@ public class Token extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private TokenType type;
+
     private boolean expired;
     private boolean revoked;
 

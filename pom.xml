@@ -6,7 +6,8 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.2.4</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
+        <!-- lookup parent from repository -->
     </parent>
     <groupId>com</groupId>
     <artifactId>develop</artifactId>
@@ -14,9 +15,9 @@
     <name>develop</name>
     <description>Demo project for Spring Boot</description>
     <properties>
+        <aws.version>1.12.470</aws.version>
         <java.version>17</java.version>
         <lombok.version>1.18.32</lombok.version>
-        <aws.version>1.12.470</aws.version>
         <zxing.version>3.4.0</zxing.version>
     </properties>
     <dependencies>
@@ -190,6 +191,47 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>2.43.0</version>
+                <configuration>
+                    <java>
+                        <toggleOffOn/>
+                        <importOrder/>
+                        <removeUnusedImports/>
+                        <palantirJavaFormat>
+                            <version>2.27.0</version>
+                        </palantirJavaFormat>
+                        <indent>
+                            <spaces>true</spaces>
+                            <spacesPerTab>4</spacesPerTab>
+                        </indent>
+
+                        <formatAnnotations/>
+                    </java>
+                    <markdown>
+                        <includes>
+                            <include>**/*.md</include>
+                        </includes>
+                        <flexmark/>
+                    </markdown>
+                    <pom>
+                        <includes>
+                            <include>pom.xml</include>
+                        </includes>
+                        <sortPom>
+                            <encoding>UTF-8</encoding>
+                            <keepBlankLines>true</keepBlankLines>
+                            <nrOfIndentSpace>4</nrOfIndentSpace>
+                            <indentBlankLines>false</indentBlankLines>
+                            <indentSchemaLocation>true</indentSchemaLocation>
+                            <expandEmptyElements>false</expandEmptyElements>
+                            <sortProperties>true</sortProperties>
+                        </sortPom>
+                    </pom>
                 </configuration>
             </plugin>
         </plugins>

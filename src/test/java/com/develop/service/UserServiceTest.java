@@ -1,5 +1,12 @@
 package com.develop.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.develop.dto.AuthRequest;
 import com.develop.dto.AuthResponse;
 import com.develop.dto.UserRequest;
@@ -9,6 +16,9 @@ import com.develop.exception.UserRegistrationException;
 import com.develop.model.Role;
 import com.develop.model.User;
 import com.develop.repository.UserRepository;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,36 +29,30 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
     @Mock
     private PasswordEncoder passwordEncoder;
+
     @Mock
     private JwtService jwtService;
+
     @Mock
     private AuthService authService;
+
     @Mock
     private AuthenticationManager authenticationManager;
+
     @InjectMocks
     private UserService userService;
+
     private UserRequest userRequest;
     private AuthRequest authRequest;
     private User user;
     private AutoCloseable closeable;
-
 
     @BeforeEach
     void setUp() {
@@ -89,7 +93,8 @@ class UserServiceTest {
         when(passwordEncoder.encode(any(String.class))).thenReturn("encodedPassword");
         when(userRepository.save(any(User.class))).thenThrow(new RuntimeException("Database error"));
 
-        UserRegistrationException exception = assertThrows(UserRegistrationException.class, () -> userService.register(userRequest));
+        UserRegistrationException exception =
+                assertThrows(UserRegistrationException.class, () -> userService.register(userRequest));
 
         assertEquals("Failed to register user: Database error", exception.getMessage());
         verify(userRepository).save(any(User.class));
@@ -135,8 +140,18 @@ class UserServiceTest {
 
     @Test
     void getAllUsers_ShouldReturnUserResponseList() {
-        User user1 = User.builder().id(1L).name("John Doe").email("john@example.com").role(Role.USER).build();
-        User user2 = User.builder().id(2L).name("Jane Doe").email("jane@example.com").role(Role.USER).build();
+        User user1 = User.builder()
+                .id(1L)
+                .name("John Doe")
+                .email("john@example.com")
+                .role(Role.USER)
+                .build();
+        User user2 = User.builder()
+                .id(2L)
+                .name("Jane Doe")
+                .email("jane@example.com")
+                .role(Role.USER)
+                .build();
         when(userRepository.findAll()).thenReturn(Arrays.asList(user1, user2));
 
         List<UserResponse> users = userService.getAllUsers();

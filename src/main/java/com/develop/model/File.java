@@ -15,6 +15,7 @@ import lombok.*;
 public class File extends BaseEntity {
     @Column(unique = true)
     private String fileName;
+
     private String fileType;
 
     @Column(length = 5000)

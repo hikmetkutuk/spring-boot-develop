@@ -3,14 +3,13 @@ package com.develop.controller;
 import com.develop.dto.HttpResponse;
 import com.develop.model.File;
 import com.develop.service.FileService;
+import java.time.LocalDateTime;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDateTime;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/file")
@@ -32,16 +31,14 @@ public class FileController {
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
         String response = fileService.uploadFileToS3(file);
 
-        return ResponseEntity.ok(
-                HttpResponse.builder()
-                        .timestamp(LocalDateTime.now().toString())
-                        .data(Map.of("response", response))
-                        .message("File uploaded successfully")
-                        .path("/api/v1/file/upload")
-                        .statusCode(HttpStatus.OK.value())
-                        .status(HttpStatus.OK)
-                        .build()
-        );
+        return ResponseEntity.ok(HttpResponse.builder()
+                .timestamp(LocalDateTime.now().toString())
+                .data(Map.of("response", response))
+                .message("File uploaded successfully")
+                .path("/api/v1/file/upload")
+                .statusCode(HttpStatus.OK.value())
+                .status(HttpStatus.OK)
+                .build());
     }
 
     /**
@@ -56,8 +53,7 @@ public class FileController {
         byte[] file = fileService.downloadFileFromS3(fileName);
 
         if (file == null) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Dosya indirilemedi.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Dosya indirilemedi.");
         }
 
         return ResponseEntity.status(HttpStatus.OK)

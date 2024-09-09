@@ -1,6 +1,7 @@
 package com.develop.controller;
 
 import com.develop.service.QrCodeService;
+import java.util.Random;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -8,8 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.Random;
 
 @Controller
 @RequestMapping("/api/v1/qrcode")
@@ -29,7 +28,9 @@ public class QrCodeController {
     @GetMapping(value = "/generate/{text}", produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<byte[]> getQRCodeWithText(@PathVariable("text") String text) {
         byte[] qrCodeImage = qrCodeService.getQRCodeImage(text, 250, 250);
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"qrcode.png\"").body(qrCodeImage);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"qrcode.png\"")
+                .body(qrCodeImage);
     }
 
     /**
@@ -42,7 +43,9 @@ public class QrCodeController {
     public ResponseEntity<byte[]> getQRCode() {
         String generatedString = generateRandomString();
         byte[] qrCodeImage = qrCodeService.getQRCodeImage(generatedString, 250, 250);
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"qrcode.png\"").body(qrCodeImage);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"qrcode.png\"")
+                .body(qrCodeImage);
     }
 
     private String generateRandomString() {

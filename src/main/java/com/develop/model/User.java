@@ -1,13 +1,12 @@
 package com.develop.model;
 
 import jakarta.persistence.*;
+import java.util.Collection;
+import java.util.List;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
-import java.util.List;
 
 @Getter
 @Setter
@@ -19,8 +18,10 @@ import java.util.List;
 public class User extends BaseEntity implements UserDetails {
 
     private String name;
+
     @Column(unique = true)
     private String email;
+
     private String password;
 
     @Enumerated(EnumType.STRING)

@@ -1,6 +1,8 @@
 package com.develop.config;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
+import java.time.Duration;
+import java.util.Arrays;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCache;
@@ -15,20 +17,19 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 
-import java.time.Duration;
-import java.util.Arrays;
-
 @Configuration
 @EnableCaching
 public class CacheConfig {
 
     @Bean
     public CaffeineCache caffeineCacheConfig() {
-        return new CaffeineCache("userCache", Caffeine.newBuilder()
-                .expireAfterWrite(Duration.ofMinutes(1))
-                .initialCapacity(1)
-                .maximumSize(2000)
-                .build());
+        return new CaffeineCache(
+                "userCache",
+                Caffeine.newBuilder()
+                        .expireAfterWrite(Duration.ofMinutes(1))
+                        .initialCapacity(1)
+                        .maximumSize(2000)
+                        .build());
     }
 
     @Bean
@@ -43,13 +44,14 @@ public class CacheConfig {
         return RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofMinutes(5))
                 .disableCachingNullValues()
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(
+                        new GenericJackson2JsonRedisSerializer()));
     }
 
     @Bean
-    public CacheManager redisCacheManager(RedisConnectionFactory connectionFactory, RedisCacheConfiguration cacheConfiguration) {
-        return RedisCacheManager.RedisCacheManagerBuilder
-                .fromConnectionFactory(connectionFactory)
+    public CacheManager redisCacheManager(
+            RedisConnectionFactory connectionFactory, RedisCacheConfiguration cacheConfiguration) {
+        return RedisCacheManager.RedisCacheManagerBuilder.fromConnectionFactory(connectionFactory)
                 .withCacheConfiguration("userCache", cacheConfiguration)
                 .build();
     }
@@ -57,7 +59,8 @@ public class CacheConfig {
     @Bean
     @Primary
     public CompositeCacheManager cacheManager(CacheManager caffeineCacheManager, CacheManager redisCacheManager) {
-        CompositeCacheManager compositeCacheManager = new CompositeCacheManager(caffeineCacheManager, redisCacheManager);
+        CompositeCacheManager compositeCacheManager =
+                new CompositeCacheManager(caffeineCacheManager, redisCacheManager);
         compositeCacheManager.setFallbackToNoOpCache(false);
         return compositeCacheManager;
     }

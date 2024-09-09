@@ -27,4 +27,16 @@
 - [x] File Upload/Object Storage
 - [x] Generate QR Code
 - [ ] Schedule Tasks
-- [ ] Code Formatting with Spotless 
+- [x] Code Formatting with Spotless
+
+---
+
+### Running Spotless
+
+``
+mvn spotless:check 
+``
+
+``
+mvn spotless:apply
+``

@@ -10,6 +10,9 @@ import com.develop.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -20,10 +23,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Slf4j
 @Service
 public class UserService {
@@ -33,7 +32,12 @@ public class UserService {
     private final AuthService authService;
     private final AuthenticationManager authenticationManager;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthService authService, AuthenticationManager authenticationManager) {
+    public UserService(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            JwtService jwtService,
+            AuthService authService,
+            AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
@@ -68,12 +72,9 @@ public class UserService {
     public AuthResponse login(AuthRequest request) {
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.email(),
-                            request.password()
-                    )
-            );
-            var user = userRepository.findByEmail(request.email())
+                    new UsernamePasswordAuthenticationToken(request.email(), request.password()));
+            var user = userRepository
+                    .findByEmail(request.email())
                     .orElseThrow(() -> new UserLoginException("User not found with email: " + request.email()));
             var token = jwtService.generateToken(user);
             var refreshToken = jwtService.generateRefreshToken(user);
@@ -112,12 +113,7 @@ public class UserService {
     public List<UserResponse> getAllUsers() {
         try {
             var response = userRepository.findAll().stream()
-                    .map(user -> new UserResponse(
-                            user.getId(),
-                            user.getName(),
-                            user.getEmail(),
-                            user.getRole()
-                    ))
+                    .map(user -> new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getRole()))
                     .collect(Collectors.toList());
             log.info("Get all users successfully");
             return response;
@@ -131,12 +127,7 @@ public class UserService {
     public UserResponse getUserById(Long id) {
         try {
             var user = userRepository.findById(id).orElseThrow();
-            var response = new UserResponse(
-                    user.getId(),
-                    user.getName(),
-                    user.getEmail(),
-                    user.getRole()
-            );
+            var response = new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getRole());
             log.info("Get user with id {} successfully", id);
             return response;
         } catch (Exception e) {
@@ -145,11 +136,7 @@ public class UserService {
         }
     }
 
-    @Caching(
-            evict = {
-                    @CacheEvict(value = "userCache", allEntries = true, cacheManager = "redisCacheManager")
-            }
-    )
+    @Caching(evict = {@CacheEvict(value = "userCache", allEntries = true, cacheManager = "redisCacheManager")})
     public UserResponse updateUser(Long id, UserRequest request) {
         try {
             var user = userRepository.findById(id).orElseThrow();
@@ -159,12 +146,7 @@ public class UserService {
             user.setRole(request.role());
             userRepository.save(user);
             log.info("User with id {} updated successfully", id);
-            return new UserResponse(
-                    user.getId(),
-                    user.getName(),
-                    user.getEmail(),
-                    user.getRole()
-            );
+            return new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getRole());
         } catch (Exception e) {
             log.error("Failed to update user with id {}: {}", id, e.getMessage());
             throw new UserUpdateException("Failed to update user with id " + id + ": " + e.getMessage());

@@ -3,11 +3,11 @@ package com.develop.service;
 import com.develop.repository.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Service;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Service
 public class LogoutService implements LogoutHandler {
@@ -28,8 +28,8 @@ public class LogoutService implements LogoutHandler {
 
         try {
             jwt = authHeader.substring(7);
-            var storeToken = tokenRepository.findByToken(jwt)
-                    .orElseThrow(() -> new RuntimeException("Token not found: " + jwt));
+            var storeToken =
+                    tokenRepository.findByToken(jwt).orElseThrow(() -> new RuntimeException("Token not found: " + jwt));
             storeToken.setExpired(true);
             storeToken.setRevoked(true);
             tokenRepository.save(storeToken);
