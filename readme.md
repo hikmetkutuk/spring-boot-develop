@@ -29,6 +29,8 @@
 - [x] Generate QR Code
 - [ ] Schedule Tasks
 - [x] Code Formatting with Spotless
+- [ ] Monitoring Application
+- [ ] Log Management
 
 ---
 
